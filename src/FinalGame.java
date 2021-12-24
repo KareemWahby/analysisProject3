@@ -4,106 +4,31 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Stack;
 
-public class FinalGame extends SearchProblem {
+public class FinalGame{
 	public final static int U = 1;
 	public final static int R = 2;
 	public final static int D = 3;
 	public final static int L = 4;
 
-	public FinalGame(Grid init) {
-		super();
-		initialState=init;
-		this.actions = new int[] { U,R,D,L};
-	}
-	public static String Reconstruct(Node n) {
-		Deque<Integer> a = new LinkedList<>();
-		Node c = n;
-		while (c.parentNode!=null) {
-			System.out.println(c);
-			a.addFirst(c.operator);
-			c=c.parentNode;
-		}
-		ArrayList<String>actionSeq=new ArrayList<>();
-		for (int object : a) {
-			switch (object) {
-			case U:
-				actionSeq.add("up");
-				break;
-			case R:
-				actionSeq.add("right");
-				break;
-			case D:
-				actionSeq.add("down");
-				break;
-			case L:
-				actionSeq.add("left");
-				break;
-			default:
-				break;
-			}
-		}
-		
-		return actionSeq.toString();
-	}
-	public static Node bfs (String str) {
-		Grid g = new Grid(str);
-		FinalGame s=new FinalGame(g);
-		Node n = new Node(s.initialState, null, 0);
-		LinkedList<Node> nodesQueue = new LinkedList<Node>();
-		nodesQueue.add(n);
-		while (!nodesQueue.isEmpty()) {
-			for (int i = 0; i < nodesQueue.size(); i++) {
-				Node dequeuedNode = nodesQueue.remove();
-				if (s.goalTest(dequeuedNode.state)) {
-					//TODO GoalState
-					return dequeuedNode;
-				} else {
-					ArrayList<Grid> objectArr = s.aplyActions(dequeuedNode.state);
-					for (int j = 0; j < objectArr.size(); j++) {
-						if (objectArr.get(j) != null) {
-							Grid gstate = objectArr.get(j);
-							Node expandedNode = new Node(gstate, dequeuedNode, j+1);
-							nodesQueue.add(expandedNode);
-						}
-					}
-				}
-			}
-		}
+
+
+	public static String bfs (String str) {
+
 		return null;
 	}
-	public static Node dfs(String str) {
-		Grid g = new Grid(str);
-		FinalGame s=new FinalGame(g);
-		Node n = new Node(s.initialState, null, 0);
-		Stack<Node> q = new Stack<>();
-		q.push(n);
-		while (!q.isEmpty()) {
-			Node node = q.pop();
-			if (s.goalTest(node.state)) {
-				//TODO goalState
-				return node;
-			} else {
-				ArrayList<Grid> expantion = s.aplyActions(node.state);
-				for (int i = 0; i < expantion.size(); i++) {
-					if (expantion.get(i) != null) {
-						Grid gstate = expantion.get(i);
-						Node expandedNode = new Node(gstate, node, i+1);
-						q.push(expandedNode);
-					}
-				}
-			}
-		}
+	public static String dfs(String str) {
+
 		return null;
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String grid = "3,3;0,2;0,1,1,1;0,2";
+		String grid = "3,3;0,0;0,1,1,1;0,2";
 		String grid2 = "10,10;1,6;2,4,5,8,0,8,0,9,9,1,7,2,2,5,2,6,5,9,6,4;4,9";
-		System.out.println(bfs(grid).state);
+		Grid g= new Grid(grid);
+		System.out.println();
 	}
 
-	@Override
-	public Grid transferFunction(Grid state, int action) {
+	public static Grid transferFunction(Grid state, int action) {
 		switch (action) {
 		case D:return state.move(D);
 		case L:return state.move(L);
@@ -113,18 +38,12 @@ public class FinalGame extends SearchProblem {
 		}
 	}
 
-	@Override
-	public ArrayList<Grid> aplyActions(Grid state) {
+	public static ArrayList<Grid> aplyActions(int[] actions,Grid state) {
 		ArrayList<Grid> r=new ArrayList<>();
 		for (int action : actions) {
 			r.add(transferFunction(state, action));
 		}
 		return r;
-	}
-
-	@Override
-	public boolean goalTest(Grid state) {
-		return state.isGoal();
 	}
 
 }
@@ -259,17 +178,5 @@ class Node {
 		this.parentNode = parentNode;
 		this.operator = operator;
 	}
-
-}
- abstract class SearchProblem {
-	Grid initialState;
-	int[] actions;
-
-	public abstract Grid transferFunction(Grid state, int action);
-
-	public abstract ArrayList<Grid> aplyActions(Grid state);
-
-	public abstract boolean goalTest(Grid state);
-
 
 }
