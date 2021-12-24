@@ -99,7 +99,7 @@ public class FinalGame extends SearchProblem {
 		// TODO Auto-generated method stub
 		String grid = "3,3;0,2;0,1,1,1;0,2";
 		String grid2 = "10,10;1,6;2,4,5,8,0,8,0,9,9,1,7,2,2,5,2,6,5,9,6,4;4,9";
-		System.out.println(bfs(grid).operator);
+		System.out.println(bfs(grid).state);
 	}
 
 	@Override
